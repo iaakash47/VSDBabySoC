@@ -1,0 +1,45 @@
+ 
+****************************************
+Report : power
+        -hier
+        -analysis_effort low
+Design : vsdbabysoc_1
+Version: S-2021.06-SP5-1
+Date   : Fri Aug 12 22:07:28 2022
+****************************************
+
+
+Library(s) Used:
+
+    avsddac (File: /home/aakash/VSDBabySoC/src/lib/avsddac.db)
+    avsdpll (File: /home/aakash/VSDBabySoC/src/lib/avsdpll.db)
+    saed32hvt_tt0p85v25c (File: /home/skandha/Tools_SNPS/Downloads_temp/SAED32_EDK/lib/stdcell_hvt/db_ccs/saed32hvt_tt0p85v25c.db)
+
+
+Operating Conditions: tt0p85v25c   Library: saed32hvt_tt0p85v25c
+Wire Load Model Mode: enclosed
+
+Design        Wire Load Model            Library
+------------------------------------------------
+vsdbabysoc_1           16000             saed32hvt_tt0p85v25c
+rvmyth                 16000             saed32hvt_tt0p85v25c
+
+
+Global Operating Voltage = 0.85 
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000ff
+    Time Units = 1ns
+    Dynamic Power Units = 1uW    (derived from V,C,T units)
+    Leakage Power Units = 1pW
+
+
+--------------------------------------------------------------------------------
+                                       Switch   Int      Leak     Total
+Hierarchy                              Power    Power    Power    Power    %
+--------------------------------------------------------------------------------
+vsdbabysoc_1                             38.731    0.000 2.00e+08  238.588 100.0
+  dac (avsddac)                        1.84e-03    0.000    0.000 1.84e-03   0.0
+  pll (avsdpll)                          32.438    0.000    0.000   32.438  13.6
+  core (rvmyth)                           6.291    0.000 2.00e+08  206.146  86.4
+1
