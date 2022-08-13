@@ -1,4 +1,4 @@
-# VSDbabySoC
+# VSDBabySoC
 
 VSDBabySoC is a small yet powerful RISCV-based SoC. The main purpose of designing such a small SoC is to test three open-source IP cores together for the first time and calibrate the analog part of it. VSDBabySoC contains one RVMYTH microprocessor, an 8x-PLL to generate a stable clock, and a 10-bit DAC to communicate with other analog devices.
 ![vsdbabysoc_block_diagram](https://user-images.githubusercontent.com/88897605/180599763-78185474-74f2-4a87-ad23-8b58d147ba27.png)
@@ -64,9 +64,103 @@ In this picture we can see the following signals:
 
 
 ### RISC-V Core
+RVMYTH core is a simple RISCV-based CPU
+![core](https://user-images.githubusercontent.com/88897605/184493149-e5a3a646-0ceb-4249-8a2e-057860500c28.png)
+
 ![risc_v_core](https://user-images.githubusercontent.com/88897605/184363013-96ce58d3-3a15-4301-9cfd-c01166a09731.png)
 
+# Design  Environment Constraints 
+``` set_units -time ns
+create_clock [get_pins {pll/CLK}] -name clk -period 10
+set_max_area 8000;
+set_max_fanout 5 vsdbabysoc;
+set_max_transition 10 vsdbabysoc
+#set_min_delay -max 10 -clock[get_clk myclk] [get_ports OUT]
+set_max_delay 10 -from dac/OUT -to [get_ports OUT]
 
+
+#set_input_delay[expr 0.34][all_inputs]
+
+
+
+set_clock_latency -source 2 [get_clocks MYCLK];
+set_clock_latency 1 [get_clocks MYCLK];
+set_clock_uncertainty -setup 0.5 [get_clocks MYCLK];
+set_clock_uncertainty -hold 0.5 [get_clocks MYCLK];
+
+set_input_delay -max 4 -clock [get_clocks MYCLK] [get_ports VCO_IN];
+set_input_delay -max 4 -clock [get_clocks MYCLK] [get_ports ENb_CP];
+set_input_delay -min 1 -clock [get_clocks MYCLK] [get_ports VCO_IN];
+set_input_delay -min 1 -clock [get_clocks MYCLK] [get_ports ENb_CP];
+
+set_input_transition -max 0.4 [get_ports ENb_CP];
+set_input_transition -max 0.4 [get_ports VCO_IN];
+set_input_transition -min 0.1 [get_ports ENb_CP];
+set_input_transition -min 0.1 [get_ports VCO_IN];
+
+
+
+
+
+set_load -max 0.5 [get_ports OUT];
+set_load -min 0.5 [get_ports OUT];
+```
+#### Timing Reports of VSDBabySoC
+```
+Startpoint: dac/OUT (internal path startpoint)
+  Endpoint: OUT (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  vsdbabysoc_1       16000                 saed32hvt_tt0p85v25c
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 r
+  dac/OUT (avsddac)                        0.00       0.00 r
+  OUT (out)                                0.01       0.01 r
+  data arrival time                                   0.01
+
+  max_delay                               10.00      10.00
+  output external delay                    0.00      10.00
+  data required time                                 10.00
+  -----------------------------------------------------------
+  data required time                                 10.00
+  data arrival time                                  -0.01
+  -----------------------------------------------------------
+  slack (MET)                                         9.99
+
+
+1
+```
+**Design Environment**: It Consist of Operating Conditions ,Wire Load Models and System Interface Requirements
+
+**Operating Conditions**:It consist of process of voltage and temperature requirements
+
+**Wire Load Model**:It allows Design Compiler to estimate the effect of the wire length and fan out on resistance.capacitance and area of nets,basically it used to calculate the wire delays 
+
+#### Input and Ouput Timing
+* In Design Compiler we need to specify the timing requirements for input and ouputs ports used to optimize the VSDbabySoC module 
+* The **set_input_delay** and **set_output_delay** commands are used to constrained the input and output port delays
+* The **set_input_delay** command is used to specify how much time is used by external logic or block
+* The **set_output_delay** command is used to specify how much time is used by external logic or block needs for optimization
+```
+set_input_delay -max 4 -clock [get_clocks MYCLK] [get_ports VCO_IN];
+set_input_delay -max 4 -clock [get_clocks MYCLK] [get_ports ENb_CP];
+set_input_delay -min 1 -clock [get_clocks MYCLK] [get_ports VCO_IN];
+set_input_delay -min 1 -clock [get_clocks MYCLK] [get_ports ENb_CP];
+
+```
+#### Combinational Delay
+* In Design Compiler to constrain the Combinational path **set_max_delay** and **set_min_delay** commands are used to optimize the VSDbabySoC module 
+* **set_max_delay** command allows to specify the maximum delay of a timing path
+* **set_min_delay** command allows to specify the minimum delay of a timing path
+```
+#set_min_delay -max 10 -clock[get_clk myclk] [get_ports OUT]
+set_max_delay 10 -from dac/OUT -to [get_ports OUT]
+```
 # Contributor
 Aakash K</br>
 Contact:iaakashkrish@gmail.com</br>
