@@ -1,0 +1,47 @@
+ 
+****************************************
+Report : area
+Design : vsdbabysoc_1
+Version: S-2021.06-SP5-1
+Date   : Fri Aug 12 22:07:28 2022
+****************************************
+
+Information: Updating design information... (UID-85)
+Library(s) Used:
+
+    avsddac (File: /home/aakash/VSDBabySoC/src/lib/avsddac.db)
+    avsdpll (File: /home/aakash/VSDBabySoC/src/lib/avsdpll.db)
+    saed32hvt_tt0p85v25c (File: /home/skandha/Tools_SNPS/Downloads_temp/SAED32_EDK/lib/stdcell_hvt/db_ccs/saed32hvt_tt0p85v25c.db)
+
+Number of ports:                           19
+Number of nets:                          2349
+Number of cells:                         2214
+Number of combinational cells:           1534
+Number of sequential cells:               676
+Number of macros/black boxes:               2
+Number of buf/inv:                         96
+Number of references:                       3
+
+Combinational area:               3918.392200
+Buf/Inv area:                      121.989120
+Noncombinational area:            4466.835091
+Macro/Black Box area:                0.000000
+Net Interconnect area:            2861.704785
+
+Total cell area:                  8385.227290
+Total area:                      11246.932076
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  ---------
+vsdbabysoc_1                      8385.2273    100.0     0.0000     0.0000  0.0000  vsdbabysoc_1
+core                              8385.2273    100.0  3918.3922  4466.8351  0.0000  rvmyth
+--------------------------------  ---------  -------  ---------  ---------  ------  ---------
+Total                                                 3918.3922  4466.8351  0.0000
+
+1
